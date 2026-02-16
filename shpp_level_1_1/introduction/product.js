@@ -38,95 +38,95 @@ export function Product(
     this.reviews = reviews
     this.images = images
 
-    this.setName = (name) => {
+    this.setName = function (name) {
         this.name = name;
     };
 
-    this.setDescription = (description) => {
+    this.setDescription = function (description) {
         this.description = description;
     };
 
-    this.setPrice = (price) => {
+    this.setPrice = function (price) {
         this.price = price
     };
 
-    this.setBrand = (brand) => {
+    this.setBrand = function (brand) {
         this.brand = brand
     }
 
-    this.setSizes = (sizes) => {
+    this.setSizes = function (sizes) {
         this.sizes = sizes
     }
 
-    this.setActiveSize = (activeSize) => {
+    this.setActiveSize = function (activeSize) {
         this.activeSize = activeSize
     }
 
-    this.setQuantity = (quantity) => {
+    this.setQuantity = function (quantity) {
         this.quantity = quantity
     }
 
-    this.setDate = (date) => {
+    this.setDate = function (date) {
         this.date = date
     }
 
-    this.setReviews = (reviews) => {
+    this.setReviews = function (reviews) {
         this.reviews = reviews
     }
 
-    this.setImages = (images) => {
+    this.setImages = function (images) {
         this.images = images
     }
 
-    this.getName = () => {
+    this.getName = function () {
         return this.name
     };
 
-    this.getDescription = () => {
+    this.getDescription = function () {
         return this.description
     };
 
-    this.getPrice = () => {
+    this.getPrice = function () {
         return this.price
     };
 
-    this.getBrand = () => {
+    this.getBrand = function () {
         return this.brand
     }
 
-    this.getSizes = () => {
+    this.getSizes = function () {
         return this.sizes
     }
 
-    this.getActiveSize = () => {
+    this.getActiveSize = function () {
         return this.activeSize
     }
 
-    this.getQuantity = () => {
+    this.getQuantity = function () {
         return this.quantity
     }
 
-    this.getDate = () => {
+    this.getDate = function () {
         return this.date
     }
 
-    this.getReviews = () => {
+    this.getReviews = function () {
         return this.reviews
     }
 
-    this.getImages = () => {
+    this.getImages = function () {
         return this.images
     }
 
-    this.getId = () => {
+    this.getId = function () {
         return this.id
     }
 
-    this.getReviewById = (id) => {
+    this.getReviewById = function (id) {
         return reviews.find((review) => review.id === id);
     };
 
-    this.getImage = (name) => {
+    this.getImage = function (name) {
         if (!name) {
             return this.images[0];
         }
@@ -134,33 +134,33 @@ export function Product(
         return images.find((image) => image.name === name) || this.images[0];
     };
 
-    this.addSize = (newSize) => {
+    this.addSize = function (newSize) {
         if (!this.sizes.find((size) => size === newSize)) {
             sizes.push(newSize);
         }
     };
 
-    this.deleteSize = (sizeToDelete) => {
+    this.deleteSize = function (sizeToDelete) {
         let index = this.sizes.findIndex((size) => size === sizeToDelete);
         if (index !== -1) {
             this.sizes.splice(index, 1);
         }
     };
 
-    this.addReview = (review) => {
+    this.addReview = function (review) {
         if (!this.reviews.find((r) => r.id === review.id)) {
             reviews.push(review);
         }
     };
 
-    this.deleteReview = (id) => {
+    this.deleteReview = function (id) {
         let index = this.reviews.findIndex((r) => r.id === id);
         if (index !== -1) {
             this.reviews.splice(index, 1);
         }
     };
 
-    this.getAverageRating = () => {
+    this.getAverageRating = function () {
         let cumulativeRating = 0;
 
         reviews.forEach((r) => {

@@ -7,6 +7,6 @@
  *
  * @return array containing every product which name contains search value as substring
  * */
-export const search = (products, search) => {
+export const search = function (products, search) {
     return products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()))
 };

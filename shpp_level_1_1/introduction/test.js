@@ -54,22 +54,25 @@ const products = [
     ),
 ];
 
-const foundProducts = search(products, "stn");
-console.log(foundProducts.map((p) => p.name));
+products[0].setName("yallll")
+console.log(products[0].name)
 
-const sortedByName = sortProducts(products, "name");
-const sortedByPrice = sortProducts(products, "price");
-const sortedById = sortProducts(products, "id");
-
-console.log(
-    "Sorted by Name:",
-    sortedByName.map((p) => p.getName() + " " + p.getId()),
-);
-console.log(
-    "Sorted by Price:",
-    sortedByPrice.map((p) => p.getName() + " " + p.getPrice()),
-);
-console.log(
-    "Sorted by Id:",
-    sortedById.map((p) => p.getName() + " " + p.getId()),
-);
+// const foundProducts = search(products, "stn");
+// console.log(foundProducts.map((p) => p.name));
+//
+// const sortedByName = sortProducts(products, "name");
+// const sortedByPrice = sortProducts(products, "price");
+// const sortedById = sortProducts(products, "id");
+//
+// console.log(
+//     "Sorted by Name:",
+//     sortedByName.map((p) => p.getName() + " " + p.getId()),
+// );
+// console.log(
+//     "Sorted by Price:",
+//     sortedByPrice.map((p) => p.getName() + " " + p.getPrice()),
+// );
+// console.log(
+//     "Sorted by Id:",
+//     sortedById.map((p) => p.getName() + " " + p.getId()),
+// );

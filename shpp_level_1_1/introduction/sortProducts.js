@@ -10,7 +10,7 @@
  *
  * @return: sorted array
  * */
-export const sortProducts = (products, sortRule) => {
+export const sortProducts = function (products, sortRule) {
     const options = ["id", "name", "price"]
     sortRule = sortRule.toLowerCase()
 
