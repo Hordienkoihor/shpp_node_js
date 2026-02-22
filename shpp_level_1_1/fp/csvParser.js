@@ -2,17 +2,25 @@ export const generateRating = function (csv) {
     const checkString = /^(\d{2}\.\d{2},\d{2}\.\d{2},[а-яА-ЯіїєґІЇЄҐ\s]{3,},\d+)/
     let counter = 1
 
+    function cityObjectGenerator(str) {
+        const [x, y, name, population] = str.split(",")
+        return {x: Number(x), y: Number(y), name, population: ~~population}
+    }
+
+    function populationComparator(a, b) {
+        return b.population - a.population
+    }
+
+    function csvValidator(regex) {
+        return (str) => {
+            return regex.test(str)
+        }
+    }
+
     let data = csv.split("\n")
-        .filter(str => {
-            return checkString.test(str)
-        })
-        .map(s => {
-            const [x, y, name, population] = s.split(",")
-            return {x: Number(x), y: Number(y), name, population: ~~population}
-        })
-        .sort((a, b) => {
-            return b.population - a.population;
-        })
+        .filter(csvValidator(checkString))
+        .map(cityObjectGenerator)
+        .sort(populationComparator)
         .slice(0, 10)
         .reduce((place, city) => {
             place[city.name] = {
