@@ -136,6 +136,10 @@
         <input id="sessionStorageInput" type="text" placeholder="sessionStorage" style=""
                oninput="saveSessionStorage()">
     </div>
+
+    <!--- пункт 14 --->
+    <hr>
+    <button id="goUpButton" onclick="scrollUp()" style="align-self: end; visibility: hidden; position: fixed">go up</button>
 </div>
 </body>
 <script>
@@ -292,5 +296,30 @@
             cookiesInput.value = decodeURIComponent(getCookie('cData'));
         })
     }
+
+    //пункт 14
+    {
+        window.addEventListener('scroll', () => {
+            const button = document.getElementById('goUpButton');
+
+            if (window.scrollY + window.innerHeight >= document.querySelector("body").clientHeight - 10) {
+                button.style.visibility = 'visible';
+            } else {
+                button.style.visibility = 'hidden';
+            }
+        })
+    }
+
+    function scrollUp() {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
+
+        const button = document.getElementById('goUpButton');
+        button.style.visibility = 'hidden';
+    }
+
 </script>
 </html>
