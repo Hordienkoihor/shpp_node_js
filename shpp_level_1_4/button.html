@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: black;
+            margin: 10px;
+        }
+
+        .flex-box-row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .flex-box-col {
+            display: flex;
+            flex-direction: column
+        }
+
+        hr {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="flex-box-col">
+    <!--- пункт 10 --->
+    <p style="align-self: end" id="coords"></p>
+
+    <!--- пункт 1-3 --->
+    <hr>
+    <div class="flex-box-row">
+        <div id="square" class="square"></div>
+        <div id="1" class="square"></div>
+        <div id="2" class="square"></div>
+        <div id="3" class="square"></div>
+        <div id="4" class="square"></div>
+    </div>
+
+    <hr>
+    <div class="flex-box-col" style="align-items: center;">
+        <button onclick="deleteSquareCSS()">1. remove square css</button>
+        <button onclick="deleteSquare()">1. remove square js</button>
+        <button onclick="deleteSquareHiddenCSS()">1. remove square hidden + css</button>
+        <button onclick="deleteOrRestoreSquare()">2. remove/add one</button>
+        <button onclick="deleteOrRestoreAllSquares()">3. remove/add all</button>
+    </div>
+
+
+    <!--- пункт 4 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: center">
+        <input id="selectorInput" type="text" placeholder="Enter a CSS selector">
+        <button onClick="deleteOrRestoreBySelector(document.getElementById('selectorInput'))"
+                style="align-self: center">
+            4. remove/add all
+        </button>
+    </div>
+
+    <!--- пункт 5 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: center">
+        <div id="yellowBlock" style="width: 100px; height: 100px; background-color: yellow;"></div>
+        <button onclick="alertHello()" id="yellowBlockButton">push me</button>
+    </div>
+
+    <!--- пункт 6 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: center">
+        <div id="redBlock" style="width: 50px; height: 50px; background-color: red; visibility: hidden"></div>
+        <button
+                onmouseover="showRedBlock()"
+                onmouseout="deleteOrRestoreBySelector('#redBlock')"
+                id="redBlockButton"
+                style="margin-top: 20px;"
+        >
+            push me
+        </button>
+    </div>
+
+    <!--- пункт 7 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: center;">
+        <div id="greenBlock" style="width: 50px; height: 20px; background-color: green; visibility: hidden"></div>
+        <input
+                id="greenBlockInput"
+                type="text"
+                onfocus="deleteOrRestoreBySelector('#greenBlock')"
+                oninput="deleteOrRestoreBySelector('#greenBlock')"
+                onblur="deleteOrRestoreBySelector('#greenBlock')"
+                style="margin-top: 20px;"
+        >
+
+    </div>
+
+    <!--- пункт 8 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: center;">
+        <input id="linkInput" type="text" placeholder="provide link" style="">
+        <button onclick="addImg()" style="margin-top: 40px;">generate</button>
+        <div id="displayArea" style="  margin:40px; align-items: center">
+
+        </div>
+    </div>
+
+    <!--- пункт 9 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: center;">
+        <textarea id="linkTextArea" placeholder="provide links" style=""> </textarea>
+        <button onclick="addImgs()" style="margin-top: 20px;">generate</button>
+        <div id="displayArea-9" style="  margin:20px; align-items: center">
+
+        </div>
+    </div>
+
+    <!--- пункт 11-12 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: end;">
+        <p id="userLang"></p>
+        <p id="userCoords"></p>
+    </div>
+
+
+    <!--- пункт 13 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items:center;">
+        <input id="localStorageInput" type="text" placeholder="localStorage" style="" oninput="saveLocalStorage()">
+        <input id="cookiesInput" type="text" placeholder="cookies" style="" oninput="saveCookies()">
+        <input id="sessionStorageInput" type="text" placeholder="sessionStorage" style=""
+               oninput="saveSessionStorage()">
+    </div>
+</div>
+</body>
+<script>
+    // пункт 1
+    function deleteSquare() {
+        document.getElementById("square").remove();
+    }
+
+    function deleteSquareHiddenCSS() {
+        document.getElementById("square").classList.add("hidden");
+    }
+
+    function deleteSquareCSS() {
+        document.getElementById("square").style.display = "none";
+    }
+
+    // пункт 2
+    function deleteOrRestoreSquare() {
+        let square = document.getElementById("square");
+
+        if (square.style.display === "none") {
+            square.style.display = "block";
+            return;
+        }
+        square.style.display = "none";
+    }
+
+    // пункт 3
+    function deleteOrRestoreAllSquares() {
+        let squares = [...document.getElementsByClassName("square")];
+
+        squares.map((square) => {
+            if (square.style.display === "none") {
+                square.style.display = "block";
+            } else {
+                square.style.display = "none";
+            }
+        })
+    }
+
+    //пункт 4
+    function deleteOrRestoreBySelector(selector) {
+        const val = typeof selector === 'string' ? selector : selector.value;
+
+        if (val === "div") {
+            console.log("No way")
+            return;
+        }
+
+        let elements = [...document.querySelectorAll(val)];
+
+        elements.map((element) => {
+            element.style.visibility = (element.style.visibility === "visible" ? "hidden" : "visible");
+        })
+    }
+
+    //пункт 5
+    function alertHello() {
+        alert("привіт");
+        document.getElementById("yellowBlockButton").onclick = removeYellowBlock
+    }
+
+    function removeYellowBlock() {
+        document.getElementById("yellowBlock").remove();
+    }
+
+    //пункт 6
+    function showRedBlock() {
+        document.getElementById("redBlock").style.visibility = "visible";
+    }
+
+    //пункт 7
+    function addImg() {
+        const img = document.createElement('img')
+        img.src = document.getElementById('linkInput').value
+
+        document.getElementById('displayArea').appendChild(img)
+    }
+
+    //пункт 9
+    function addImgs() {
+        const displayArea = document.getElementById('displayArea-9')
+        displayArea.innerHTML = "";
+        const links = document.getElementById('linkTextArea').value.split('\n')
+
+        links.forEach((link) => {
+            const img = document.createElement('img')
+            img.src = link
+            displayArea.appendChild(img)
+        })
+    }
+
+    //пункт 10
+    {
+        document.addEventListener('mousemove', function (e) {
+            const p = document.getElementById('coords');
+            const x = e.clientX;
+            const y = e.clientY;
+            p.innerText = (`X:${x}, Y:${y}`);
+        })
+    }
+
+    // пункт 11
+    {
+        let p = document.getElementById('userLang')
+        p.innerText = (`Lang:${navigator.language}`);
+    }
+
+    //пункт 12
+    {
+        let p = document.getElementById('userCoords')
+        if ("geolocation" in navigator) {
+            let geolocation = navigator.geolocation;
+            geolocation.getCurrentPosition((position) => {
+                p.innerText = `Ш: ${position.coords.latitude}, Д: ${position.coords.longitude}`
+            });
+        }
+    }
+
+    //пункт 13
+    function saveLocalStorage() {
+        const data = document.getElementById('localStorageInput').value
+        localStorage.setItem('lsData', data)
+    }
+
+    function saveSessionStorage() {
+        const data = document.getElementById('sessionStorageInput').value
+        sessionStorage.setItem('ssData', data)
+    }
+
+    function saveCookies() {
+        const data = document.getElementById('cookiesInput').value
+        document.cookie = `cData=${encodeURIComponent(JSON.stringify(data))}`
+    }
+
+    function getCookie(name) {
+        const cookies = document.cookie.split(';')
+        const target = cookies.find(cookie => cookie.startsWith(name))
+
+        if (target) {
+            return decodeURIComponent(target.split('=')[1])
+        }
+    }
+
+    {
+        window.addEventListener('load', () => {
+            const localStorageInput = document.getElementById('localStorageInput');
+            const cookiesInput = document.getElementById('cookiesInput');
+            const sessionStorageInput = document.getElementById('sessionStorageInput');
+
+            localStorageInput.value = localStorage.getItem('lsData');
+            sessionStorageInput.value = sessionStorage.getItem('ssData');
+
+            cookiesInput.value = decodeURIComponent(getCookie('cData'));
+        })
+    }
+</script>
+</html>

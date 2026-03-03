@@ -39,6 +39,22 @@ Accept-Language: en-us
 Accept-Encoding: gzip, deflate
 User-Agent: Mozilla/4.0
 
+`,
+    6: `GET /sum?nums=1,2,3 HTTP/1.1
+Host: shpp.me
+Accept: image/gif, image/jpeg, */*
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/4.0x
+
+`,
+    7: `POST /sum?nums=1,2,3 HTTP/1.1
+Host: shpp.me
+Accept: image/gif, image/jpeg, */*
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/4.0
+
 `
 }
 
@@ -75,6 +91,21 @@ Content-Type: text/html; charset=utf-8
 
 <h1 style="color:green">FOUND</h1>`,
     5: `please do it yourself`,
+    6: `HTTP/1.1 200 OK
+Server: Apache/2.2.14 (Win32)
+Connection: Closed
+Content-Type: text/html; charset=utf-8
+Content-Length: 1
+
+6`,
+    7: `HTTP/1.1 400 BAD REQUEST 
+Server: Apache/2.2.14 (Win32)
+Connection: Closed
+Content-Type: text/html; charset=utf-8
+Content-Length: 11
+
+bad request`
+
 }
 
 const execSync = exports.execSync = (cmd, input) => {
@@ -86,6 +117,12 @@ const execSync = exports.execSync = (cmd, input) => {
 };
 
 let res = execSync("node " + process.argv[3], inputs[process.argv[2]]);
+
+if (res === undefined) {
+    console.error("Error: The script failed to execute or returned no output.");
+    process.exit(1);
+}
+
 console.log(`got: 
 =======================
 ${res}
