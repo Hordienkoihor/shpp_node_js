@@ -27,10 +27,36 @@
         hr {
             width: 100%;
         }
+
+        .no-scroll {
+            overflow: hidden;
+        }
+
+        .gray-block {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: gray;
+            opacity: 0.5;
+        }
+
+        #drop-zone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 500px;
+            height: 200px;
+            padding: 1em;
+            border: 1px solid;
+            cursor: pointer;
+            color: black;
+        }
     </style>
 </head>
 <body>
-<div class="flex-box-col">
+<div class="flex-box-col" id="main-block">
     <!--- пункт 10 --->
     <p style="align-self: end" id="coords"></p>
 
@@ -139,7 +165,49 @@
 
     <!--- пункт 14 --->
     <hr>
-    <button id="goUpButton" onclick="scrollUp()" style="align-self: end; visibility: hidden; position: fixed">go up</button>
+    <button id="goUpButton" onclick="scrollUp()" style="align-self: end; visibility: hidden; position: fixed">go up
+    </button>
+
+    <!--- пункт 15 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: center;">
+        <div
+                id="bigBlock"
+                style="width: 100px; height: 100px; background-color: black; align-items: center;"
+                onclick="alert('big block')"
+        >
+            <div
+                    id="smallBlock"
+                    style="width: 50px; height: 50px; background-color: green;"
+                    onclick="event.stopPropagation(); alert('small block');"
+            >
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--- пункт 16 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: center;">
+        <button onclick="preventScroll()">block scroll</button>
+    </div>
+
+    <!--- пункт 17 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: center;">
+        <form id="form"><input type="submit" value="GO" id="formInput"></form>
+    </div>
+
+    <!--- пункт 17 --->
+    <hr>
+    <div class="flex-box-col" style="margin-top: 20px; align-items: center">
+        <label id="drop-zone">
+            drop zone
+            <input type="file" id="file-input" style="display: none"/>
+        </label>
+    </div>
+
 </div>
 </body>
 <script>
@@ -319,6 +387,53 @@
 
         const button = document.getElementById('goUpButton');
         button.style.visibility = 'hidden';
+    }
+
+    //пункт 16
+    function preventScroll() {
+        document.body.classList.add('no-scroll');
+        const grayBlock = document.createElement('div');
+        grayBlock.classList.add('gray-block');
+
+        const mainBlock = document.getElementById('main-block')
+        mainBlock.appendChild(grayBlock);
+
+        grayBlock.addEventListener('click', () => {
+            document.body.classList.remove('no-scroll');
+            mainBlock.removeChild(grayBlock);
+        })
+
+    }
+
+    //пункт 17
+    {
+        document.getElementById('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+        })
+    }
+
+    //пункт 18
+    {
+        const dropZone = document.getElementById('drop-zone');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+
+            dropZone.style.cursor = 'grab';
+            dropZone.style.borderColor = 'red';
+            dropZone.style.color = 'red'
+        })
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+
+            const files = [...e.dataTransfer.files]
+            dropZone.innerText = files.map(file => file.name).join('\n');
+            dropZone.style.borderColor = 'blue';
+            dropZone.style.color = 'blue';
+
+            files.map(file => sessionStorage.setItem(file.name, file))
+        })
     }
 
 </script>
