@@ -71,8 +71,18 @@ async function fetchThreeNamesB() {
         await fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01')
             .then(res => res.json())
             .then(json => people.push(json));
+        // const [promise1, promise2, promise3] = [
+        //     fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01'),
+        //     fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01'),
+        //     fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01')
+        // ]
+        //
+        // const [res1, res2, res3] = [await promise1, await promise2, await promise3];
+        //
+        // const [people1, people2, people3] = [await res1.json(), await res2.json(), await res3.json()];
+        //
         people.forEach(_person => console.log(_person.data[0]));
-        return people.map(each => each.data[0].firstname);
+        // return [people1.data[0].firstname, people2.data[0].firstname, people3.data[0].firstname,];
     }
     catch (err) {
         console.log(err);
