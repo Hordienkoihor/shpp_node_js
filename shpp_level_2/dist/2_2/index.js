@@ -12,6 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
 })();
 // пункт 2
+/**
+ * logs your current ip via api
+ * */
 async function getMyIp() {
     try {
         let data = await fetch('https://api.ipify.org?format=json');
@@ -25,30 +28,20 @@ async function getMyIp() {
 getMyIp()
     .then(ip => console.log(ip))
     .catch(err => console.log(err));
-// fetch('https://api.ipify.org?format=json').then(function (res) {
-//     return res.json();
-// }).then(function (data) {
-//     console.log(data);
-// })
-//
-//
-// function getIp() {
-//     fetch('https://api.ipify.org?format=json').then(function (res) {
-//         return res.json();
-//     }).then(function (data) {
-//         console.log(data);
-//     })
-// }
-//
-// getIp();
 //пункт 3
 //a. Використайте async/await + Promise.all
+/**
+ * fetching 3 random person from https://fakerapi.it/
+ * using async/await + Promise.all
+ * @return an array containing 3 names of random people
+ * */
 async function fetchThreeNamesA() {
     try {
+        const link = 'https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01';
         const responses = await Promise.all([
-            fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01'),
-            fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01'),
-            fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01')
+            fetch(link),
+            fetch(link),
+            fetch(link)
         ]);
         const data = await Promise.all(responses.map(response => response.json()));
         return data.map(each => each.data[0].firstname);
@@ -59,9 +52,14 @@ async function fetchThreeNamesA() {
 }
 fetchThreeNamesA().then(res => console.log(res));
 //b. Використайте async/await але без Promise.all
+/**
+ * fetching 3 random person from https://fakerapi.it/
+ * using async/await
+ * @return an array containing 3 names of random people
+ * */
 async function fetchThreeNamesB() {
     try {
-        const people = [];
+        // const people: { data: [{ firstname: string }] }[] = []
         // await fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01')
         //     .then(res => res.json())
         //     .then(json => people.push(json))
@@ -72,10 +70,11 @@ async function fetchThreeNamesB() {
         //     .then(res => res.json())
         //     .then(json => people.push(json))
         // people.forEach(_person => console.log(_person.data[0]));
+        const link = 'https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01';
         const [promise1, promise2, promise3] = [
-            fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01'),
-            fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01'),
-            fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01')
+            fetch(link),
+            fetch(link),
+            fetch(link)
         ];
         const [res1, res2, res3] = [await promise1, await promise2, await promise3];
         const [people1, people2, people3] = [await res1.json(), await res2.json(), await res3.json()];
@@ -86,4 +85,13 @@ async function fetchThreeNamesB() {
     }
 }
 fetchThreeNamesB().then(res => console.log(res));
+//c. Скористуйтеся виключно промісами, без async/await, без Promise.all .... це може бути досить важко
+function fetchThreeNamesC() {
+    const link = 'https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01';
+    const [promise1, promise2, promise3] = [
+        fetch(link),
+        fetch(link),
+        fetch(link)
+    ];
+}
 //# sourceMappingURL=index.js.map
