@@ -2,6 +2,7 @@
 // 1.
 Object.defineProperty(exports, "__esModule", { value: true });
 function getFirstWord(a) {
+    // @ts-ignore //todo <<
     return a.split(/ +/)[0].length;
 }
 // 2.
