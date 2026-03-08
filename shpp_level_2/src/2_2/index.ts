@@ -53,7 +53,7 @@ async function fetchThreeNamesA() {
     }
 }
 
-fetchThreeNamesA().then(res => console.log(res))
+fetchThreeNamesA().then(res => console.log("with async/promiseAll: " + res))
 
 //b. Використайте async/await але без Promise.all
 /**
@@ -96,21 +96,73 @@ async function fetchThreeNamesB() {
     }
 }
 
-fetchThreeNamesB().then(res => console.log(res))
+fetchThreeNamesB().then(res => console.log("with async: " + res))
 
 //c. Скористуйтеся виключно промісами, без async/await, без Promise.all .... це може бути досить важко
 
 function fetchThreeNamesC() {
     const link = 'https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01'
-    const [promise1, promise2, promise3] = [
-        fetch(link),
-        fetch(link),
-        fetch(link)
-    ]
+    // let res1, res2, res3;
+
+
+    // promise1.then(function (res) {
+    //     res1 = res;
+    // })
+    //
+    // promise2.then(function (res) {
+    //     res2 = res;
+    // })
+    // promise3.then(function (res) {
+    //     res3 = res;
+    // })
+
+    // res1 = Promise.resolve(promise1)
+    // res2 = Promise.resolve(promise2)
+    // res3 = Promise.resolve(promise3)
+
+    // Promise.resolve(promise1).then(res => res1 = res)
+    // Promise.resolve(promise2).then(res => res2 = res)
+    // Promise.resolve(promise3).then(res => res3 = res)
+    //
+    //
+    // return [res1, res2, res3];
+
+    return new Promise<string[]>((resolve, reject) => {
+        const [promise1, promise2, promise3] = [
+            fetch(link),
+            fetch(link),
+            fetch(link)
+        ]
+
+        let count = 0;
+
+        function resolvePromise(promise: Promise<Response>) {
+            promise
+                .then((res: Response): Promise<{ data: [{ firstname: string }] }> => {
+                    return res.json();
+                })
+                .then(json => {
+                    names.push(json.data[0].firstname)
+                    count++;
+
+                    if (count === 3) {
+                        names.push("resolved")
+                        resolve(names)
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+
+        let names: string[] = [];
+        resolvePromise(promise1)
+        resolvePromise(promise2)
+        resolvePromise(promise3)
+    })
+
 
 }
 
-
+fetchThreeNamesC().then(res => console.log("without async/promiseAll: " + res))
 
 
 
