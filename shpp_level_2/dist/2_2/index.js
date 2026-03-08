@@ -59,17 +59,6 @@ fetchThreeNamesA().then(res => console.log("with async/promiseAll: " + res));
  * */
 async function fetchThreeNamesB() {
     try {
-        // const people: { data: [{ firstname: string }] }[] = []
-        // await fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01')
-        //     .then(res => res.json())
-        //     .then(json => people.push(json))
-        // await fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01')
-        //     .then(res => res.json())
-        //     .then(json => people.push(json))
-        // await fetch('https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01')
-        //     .then(res => res.json())
-        //     .then(json => people.push(json))
-        // people.forEach(_person => console.log(_person.data[0]));
         const link = 'https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01';
         const [promise1, promise2, promise3] = [
             fetch(link),
@@ -88,26 +77,6 @@ fetchThreeNamesB().then(res => console.log("with async: " + res));
 //c. Скористуйтеся виключно промісами, без async/await, без Promise.all .... це може бути досить важко
 function fetchThreeNamesC() {
     const link = 'https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01';
-    // let res1, res2, res3;
-    // promise1.then(function (res) {
-    //     res1 = res;
-    // })
-    //
-    // promise2.then(function (res) {
-    //     res2 = res;
-    // })
-    // promise3.then(function (res) {
-    //     res3 = res;
-    // })
-    // res1 = Promise.resolve(promise1)
-    // res2 = Promise.resolve(promise2)
-    // res3 = Promise.resolve(promise3)
-    // Promise.resolve(promise1).then(res => res1 = res)
-    // Promise.resolve(promise2).then(res => res2 = res)
-    // Promise.resolve(promise3).then(res => res3 = res)
-    //
-    //
-    // return [res1, res2, res3];
     return new Promise((resolve, reject) => {
         const [promise1, promise2, promise3] = [
             fetch(link),
@@ -137,4 +106,45 @@ function fetchThreeNamesC() {
     });
 }
 fetchThreeNamesC().then(res => console.log("without async/promiseAll: " + res));
+function getRandomGender() {
+    return Math.random() > 0.5 ? "female" : "male";
+}
+// Напишіть функцію, яка повинна за мінімальну кількість запитів отримати користувача жінку
+//b з async/await
+async function fetchWoman(fetchCount = 0) {
+    let gender = getRandomGender();
+    const link = `https://fakerapi.it/api/v2/persons?_quantity=1&_gender=${gender}&_birthday_start=2005-01-01`;
+    try {
+        const response = await fetch(link);
+        const person = await response.json();
+        if (person.data[0].gender === "female") {
+            return person.data[0].firstname + "fetches: " + fetchCount;
+        }
+        else {
+            return fetchWoman(fetchCount + 1);
+        }
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+fetchWoman().then(res => console.log("fetching woman with async: " + res));
+function fetchWomanPromise(fetchCount = 0) {
+    let gender = getRandomGender();
+    const link = `https://fakerapi.it/api/v2/persons?_quantity=1&_gender=${gender}&_birthday_start=2005-01-01`;
+    return fetch(link)
+        .then((res) => {
+        return res.json();
+    })
+        .then((json) => {
+        if (json.data[0].gender === "female") {
+            return (json.data[0].firstname + "fetches: " + fetchCount);
+        }
+        else {
+            return fetchWomanPromise(fetchCount + 1);
+        }
+    })
+        .catch(err => console.log(err));
+}
+fetchWomanPromise().then(res => console.log("fetching woman with promise: " + res));
 //# sourceMappingURL=index.js.map
