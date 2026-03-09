@@ -129,6 +129,7 @@ async function fetchWoman(fetchCount = 0) {
     }
 }
 fetchWoman().then(res => console.log("fetching woman with async: " + res));
+//a. без async/await
 function fetchWomanPromise(fetchCount = 0) {
     let gender = getRandomGender();
     const link = `https://fakerapi.it/api/v2/persons?_quantity=1&_gender=${gender}&_birthday_start=2005-01-01`;
@@ -147,4 +148,42 @@ function fetchWomanPromise(fetchCount = 0) {
         .catch(err => console.log(err));
 }
 fetchWomanPromise().then(res => console.log("fetching woman with promise: " + res));
+/*Є функція №1, яка приймає коллбек, який буде викликаний з параметром == ваш поточний айпі.
+ Створіть функцію №2, яку можна евейтити, яка буде користуватися функцією №1*/
+const callbackExample = (param) => {
+    console.log("callback happening with ip:  " + param.ip);
+    return param.ip.split("").reverse().join("");
+};
+function function1(callback, json) {
+    return callback(json);
+}
+async function function2() {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const json = await response.json();
+    return function1(callbackExample, json);
+}
+(async () => {
+    const ipBackward = await function2();
+    console.log(ipBackward);
+})();
+/*
+* Є функція №1, яку можна евейти, яка поверне рядок == ваш поточний айп.
+* Створіть функцію №2, яка повинна використовувати функцію №1 для отримання вашого поточного айпі,
+* і яка приймає на вхід один параметр - функцію-коллбек, яка буде викликана, коли айпі буде отримано,
+* з першим параметром, що дорівнює цьому айпі. Так, ми намагалися писати заплутано, але тут все чітко.*/
+function awaitFunction1() {
+    return Promise.resolve(getMyIp());
+}
+async function callbackFunction2(callback) {
+    const ip = await awaitFunction1();
+    if (!ip) {
+        console.log("error fetching ip");
+    }
+    else {
+        callback(ip);
+    }
+}
+callbackFunction2((str) => {
+    console.log("this is callback in punkt 6, here is an ip: " + str);
+});
 //# sourceMappingURL=index.js.map

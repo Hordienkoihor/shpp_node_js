@@ -15,7 +15,7 @@
 /**
  * logs your current ip via api
  * */
-async function getMyIp() {
+async function getMyIp(): Promise<string> {
     try {
         let data: Response = await fetch('https://api.ipify.org?format=json');
         const json: { ip: string } = await data.json()
@@ -23,6 +23,7 @@ async function getMyIp() {
         return json.ip;
     } catch (err) {
         console.log(err);
+        return "256.256.256.256"
     }
 }
 
@@ -174,6 +175,55 @@ function fetchWomanPromise(fetchCount: number = 0): Promise<string> {
 
 fetchWomanPromise().then(res => console.log("fetching woman with promise: " + res))
 
+
+/*Є функція №1, яка приймає коллбек, який буде викликаний з параметром == ваш поточний айпі.
+ Створіть функцію №2, яку можна евейтити, яка буде користуватися функцією №1*/
+
+
+const callbackExample = (param: { ip: string }) => {
+    console.log("callback happening with ip:  " + param.ip)
+    return param.ip.split("").reverse().join("")
+}
+
+function function1(callback: (param: { ip: string }) => string, json: { ip: string }) {
+    return callback(json)
+}
+
+async function function2() {
+    const response = await fetch('https://api.ipify.org?format=json')
+    const json = await response.json();
+
+    return function1(callbackExample, json);
+}
+
+(async () => {
+    const ipBackward = await function2();
+    console.log(ipBackward);
+})();
+
+/*
+* Є функція №1, яку можна евейти, яка поверне рядок == ваш поточний айп.
+* Створіть функцію №2, яка повинна використовувати функцію №1 для отримання вашого поточного айпі,
+* і яка приймає на вхід один параметр - функцію-коллбек, яка буде викликана, коли айпі буде отримано,
+* з першим параметром, що дорівнює цьому айпі. Так, ми намагалися писати заплутано, але тут все чітко.*/
+
+function awaitFunction1(): Promise<string> {
+    return Promise.resolve(getMyIp())
+}
+
+async function callbackFunction2(callback: (ip: string) => void) {
+    const ip = await awaitFunction1()
+
+    if (!ip) {
+        console.log("error fetching ip")
+    } else {
+        callback(ip)
+    }
+}
+
+callbackFunction2((str: string) => {
+    console.log("this is callback in punkt 6, here is an ip: " + str)
+})
 
 
 
