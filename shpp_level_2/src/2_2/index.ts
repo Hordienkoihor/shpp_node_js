@@ -85,6 +85,11 @@ async function fetchThreeNamesB() {
 fetchThreeNamesB().then(res => console.log("with async: " + res))
 
 //c. Скористуйтеся виключно промісами, без async/await, без Promise.all .... це може бути досить важко
+/**
+ * fetching 3 random person from https://fakerapi.it/
+ * using only promises
+ * @return an array containing 3 names of random people
+ * */
 function fetchThreeNamesC() {
     const link = 'https://fakerapi.it/api/v2/persons?_quantity=1&_gender=female&_birthday_start=2005-01-01'
 
@@ -119,18 +124,26 @@ function fetchThreeNamesC() {
         resolvePromise(promise2)
         resolvePromise(promise3)
     })
-
-
 }
 
 fetchThreeNamesC().then(res => console.log("without async/promiseAll: " + res))
 
+/**
+ * randomly returns ether male or female literals
+ * @return string
+ * */
 function getRandomGender(): "female" | "male" {
     return Math.random() > 0.5 ? "female" : "male"
 }
 
 // Напишіть функцію, яка повинна за мінімальну кількість запитів отримати користувача жінку
 //b з async/await
+/**
+ * fetching random person from https://fakerapi.it/
+ * until it is a woman
+ * using async await
+ * @return string containing name of a person and fetch count
+ * */
 async function fetchWoman(fetchCount: number = 0) {
     let gender = getRandomGender();
     const link = `https://fakerapi.it/api/v2/persons?_quantity=1&_gender=${gender}&_birthday_start=2005-01-01`
@@ -154,6 +167,12 @@ async function fetchWoman(fetchCount: number = 0) {
 fetchWoman().then(res => console.log("fetching woman with async: " + res))
 
 //a. без async/await
+/**
+ * fetching random person from https://fakerapi.it/
+ * until it is a woman
+ * using only promises
+ * @return string containing name of a person and fetch count
+ * */
 function fetchWomanPromise(fetchCount: number = 0): Promise<string> {
     let gender = getRandomGender();
     const link = `https://fakerapi.it/api/v2/persons?_quantity=1&_gender=${gender}&_birthday_start=2005-01-01`
@@ -178,7 +197,6 @@ fetchWomanPromise().then(res => console.log("fetching woman with promise: " + re
 
 /*Є функція №1, яка приймає коллбек, який буде викликаний з параметром == ваш поточний айпі.
  Створіть функцію №2, яку можна евейтити, яка буде користуватися функцією №1*/
-
 
 const callbackExample = (param: { ip: string }) => {
     console.log("callback happening with ip:  " + param.ip)
