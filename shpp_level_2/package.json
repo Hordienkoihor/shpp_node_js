@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/node": "^25.4.0",
     "rimraf": "^6.1.3"
   }
 }
